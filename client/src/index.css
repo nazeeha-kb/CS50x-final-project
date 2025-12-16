@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap");
+@import "tailwindcss";
+
+
+@theme {
+  --color-slate-green: #43655A;
+  --color-dark-green: #1F372D;;
+  --font-instrument-serif: "Instrument Serif", serif;
+}
+
+@layer base{
+  body {
+    color: var(--color-dark-green);
+  }
+}
+
+@layer components{
+  .btn{
+    @apply sm:px-10 px-6 py-3 cursor-pointer rounded-full md:w-50 sm:w-48 w-46
+  }
+  .feature {
+    @apply flex justify-start items-center md:gap-6 gap-4 text-xl
+  }
+  .feature span {
+    @apply rounded-full lg:w-25 lg:h-25 w-22 h-22 shrink-0 flex items-center justify-center text-5xl font-instrument-serif
+  }
+  .feature p {
+    @apply h-full w-full p-6 bg-green-100 rounded-2xl min-h-24 flex items-center text-[clamp(1.2rem,1.055rem+0.73vw,1.6rem)]
+  }
+}
