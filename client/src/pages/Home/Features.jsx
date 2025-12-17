@@ -2,8 +2,8 @@ import React from "react";
 
 const Features = () => {
   return (
-    <section className="w-screen px-6 pb-30 pt-20 flex flex-col justify-center items-center">
-      <h2 className="font-semibold text-4xl pb-18 text-center">
+    <section className="w-screen px-6 pb-30 lg:pt-10 pt-14 flex flex-col justify-center items-center">
+      <h2 className="font-semibold text-[clamp(1.8rem,1.233rem+3.02vw,3rem)] pb-18 text-center text-green-900 underline underline-offset-4 decoration-green-300 ">
         3 Steps to Clarity
       </h2>
       <ol className="flex flex-col lg:w-[60%] md:w-[68%] lg:gap-12 gap-10">
