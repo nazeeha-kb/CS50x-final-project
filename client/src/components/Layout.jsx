@@ -10,7 +10,7 @@ export default function Layout() {
         <Navbar />
       </header>
 
-      <main className="min-h-[76vh]">
+      <main className="min-h-[79vh]">
         <Outlet />
       </main>
 
