@@ -2,10 +2,18 @@
 @import "tailwindcss";
 
 @theme {
+  /* colors */
+  --color-dark-green: #1f372d;
+  --color-teal-green: #8acab2;
   --color-slate-green: #43655a;
-  --color-dark-green: #1f372d;
-  --color-dark-green: #1f372d;
-  --color-teal-green: #8ACAB2;
+  --color-slate-green-800: #2f483f;
+  --color-brown-50: #f2f0ef;
+  --color-brown-100: #b7a193;
+  --color-brown-400: #413a36;
+  --color-active-task: #a8e6cf;
+  --color-disabled-task: #e2bfa7;
+  --color-disabled-text: #4a4a4a;
+  /* typography */
   --font-instrument-serif: "Instrument Serif", serif;
 }
 
@@ -16,10 +24,9 @@
 }
 
 @layer components {
-  /* Hero section button */
-  /* .btn {
-    @apply sm:px-10 px-6 py-3 cursor-pointer rounded-full md:w-50 sm:w-48 w-46;
-  } */
+  .border {
+    @apply border-[0.6px] border-gray-400;
+  }
 
   /* Feature section */
   .feature {
@@ -34,6 +41,41 @@
 
   /* button */
   .btn {
-    @apply cursor-pointer rounded-lg self-center font-semibold text-white
+    @apply cursor-pointer rounded-lg self-center font-semibold text-white bg-white;
+  }
+
+  /* Slider track gradient */
+  .slider {
+    background: linear-gradient(
+      to right,
+      var(--color-brown-100) 0%,
+      var(--color-brown-100) var(--slider-value, 0%),
+      white var(--slider-value, 0%),
+      white 100%
+    );
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    -webkit-appearance: none;
+    appearance: none;
+    @apply h-4.5 border-[0.6px] border-gray-400  cursor-pointer w-full rounded-full;
+  }
+
+  /* The range nob - vendor pseudo elements*/
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    @apply bg-brown-400 h-5 w-5 rounded-full border-none;
+  }
+
+  .slider::-moz-range-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    @apply bg-brown-400 h-5 w-5 rounded-full border-none;
+  }
+
+  /* slider container */
+  .slider-container {
+    @apply flex gap-2.5 border-[0.6px] border-gray-400 bg-brown-50 rounded-full lg:px-5 px-4 md:py-2.5 py-2;
   }
 }
