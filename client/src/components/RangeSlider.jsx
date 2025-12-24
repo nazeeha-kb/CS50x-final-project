@@ -1,48 +1,24 @@
 import { useState, useEffect, useRef } from "react";
 
-const RangeSlider = ({ min, max, value, step }) => {
-  const [sliderRange, setSliderRange] = useState(value);
-  const [inputValue, setInputValue] = useState(value);
-  const sliderRef = useRef(null);
-
-  //   function that handles controllign of range slider.
-  function handleSliderInput() {
-    // vars to count percentage
-
-    // Get the range between min and max
-    const range = max - min;
-    // Get distance between curr value and min value
-    const currValue = sliderRef.current.value;
-    const distance = currValue - min;
-
-    // Turn into percentage
-    const percentage = Math.round((distance / range) * 100);
-    // set slider range to
-    setSliderRange(percentage);
-    // set this as slider value
-    setInputValue(currValue);
-  }
-
-  // Run funciton when slider reference is set
-  useEffect(() => {
-    handleSliderInput();
-  }, [sliderRef]);
+const RangeSlider = ({ min, max, value, step, onChange }) => {
+  // compute percentage for styling
+  const percentage = Math.round(((value - min) / (max - min)) * 100);
 
   return (
     <div className="w-full flex flex-col justify-center">
       <input
         // running the function when we use slider
-        onInput={handleSliderInput}
+        onChange={(e) => onChange(Number(e.target.value))}
         className="slider"
         name=""
         id=""
-        value={inputValue}
+        value={value}
         type="range"
         min={min}
         max={max}
-        ref={sliderRef}
+        // ref={sliderRef}
         step={step}
-        style={{ "--slider-value": `${sliderRange}%` }}
+        style={{ "--slider-value": `${percentage}%` }}
       />
     </div>
   );
