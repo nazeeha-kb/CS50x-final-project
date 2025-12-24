@@ -16,7 +16,7 @@ const Hero = () => {
           to="/dashboard"
           className="btn text-[1.2rem] sm:px-10 px-8 mt-8 py-4 bg-green-800 text-white hover:bg-green-700"
         >
-          Make Decision
+          Start Prioritizing
         </Link>
       </div>
     </div>
