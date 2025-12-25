@@ -14,7 +14,7 @@ const Tasks = () => {
   // Fetching tasks from backend
   useEffect(() => {
     api
-      .get("/tasks")
+      .get("/prioritize")
       .then((res) => {
         setTasks(res.data);
         console.log(res.data);
@@ -40,7 +40,7 @@ const Tasks = () => {
             key={task.id}
             priority={task.priority}
             taskName={task.taskName}
-            status="done"
+            status="Locked"
           />
         ))}
       </div>
