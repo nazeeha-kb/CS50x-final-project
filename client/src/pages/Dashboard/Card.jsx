@@ -19,6 +19,7 @@ const Card = ({ onTaskNumChange }) => {
     time: 10,
     energy: 10,
   });
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Creating New Task
   const handleSubmit = async (event) => {
@@ -26,6 +27,7 @@ const Card = ({ onTaskNumChange }) => {
     event.preventDefault();
     try {
       // if not initialized axios then -> axios.post("full url")
+
       const new_task = await api.post("/tasks", inputTask);
 
       // resetting form after submission
@@ -36,38 +38,66 @@ const Card = ({ onTaskNumChange }) => {
         energy: 10,
       });
 
+      // setting error message as empty
+      setErrorMessage("");
+
       console.log(new_task);
-      alert("Task added Successfully!");
+      console.log("Task added Successfully!");
 
       //Fetching tasks again - to get number of tasks
       const res = await api.get("/tasks");
       // this updates "dashboard"'s useState TaskNum
       onTaskNumChange(res?.data?.length);
     } catch (err) {
-      console.log(err);
+      // Validation - checking for required fields:
+
+      // getting the specific error
+      const error = err?.response?.data;
+      // status code
+      const status = err?.response?.status;
+
+      // alerting the user
+      if (
+        status == 400 &&
+        error?.field == "taskName" &&
+        error?.code == "REQUIRED"
+      ) {
+        setErrorMessage("Please Enter Task Name");
+      }
     }
   };
 
   return (
     <div className="outline-1 lg:px-10 px-8 py-10 bg-teal-green flex flex-col items-center justify-center w-[clamp(18rem,16.909rem+5.45vw,21rem)] rounded-lg shadow-lg">
       <form
-        className="flex flex-col items-center justify-center w-full gap-9"
+        className={`flex flex-col items-center justify-center w-full ${
+          errorMessage ? "gap-7" : "gap-8.5"
+        } `}
         onSubmit={handleSubmit}
       >
-        {/* Add Task field */}
-        <input
-          type="text"
-          value={inputTask.taskName}
-          name="task"
-          id=""
-          placeholder="Your Task Here"
-          className="bg-gray-50 rounded-lg p-5 placeholder:text-[1.1rem] w-full placeholder:lg:text-xl border-[0.6px] border-gray-400 focus:outline-none lg:text-xl"
-          autoFocus
-          autoComplete="off"
-          onChange={(e) =>
-            setInputTask({ ...inputTask, taskName: e.target.value })
-          }
-        />
+        <div>
+          {/* Add Task field */}
+          <input
+            type="text"
+            value={inputTask.taskName}
+            name="task"
+            id=""
+            placeholder="Your Task Here"
+            className="bg-gray-50 rounded-lg p-5 placeholder:text-[1.1rem] w-full placeholder:lg:text-xl border-[0.6px] border-gray-400 focus:outline-none lg:text-xl"
+            autoFocus
+            autoComplete="off"
+            required
+            // required
+            onChange={(e) =>
+              setInputTask({ ...inputTask, taskName: e.target.value })
+            }
+          />
+          {errorMessage && (
+            <small className="text-red-600 pl-2 text-[0.9rem]">
+              {errorMessage}
+            </small>
+          )}
+        </div>
         {/* Sliders */}
         <div className="flex flex-col gap-3 w-full">
           {/* Urgency slider */}
@@ -118,10 +148,7 @@ const Card = ({ onTaskNumChange }) => {
         </div>
 
         {/* Add task button */}
-        <button
-          // onClick={createTask}
-          className="bg-slate-green hover:bg-slate-green-800 cursor-pointer rounded-full lg:px-10 px-10 py-3.5 lg:text-xl text-white"
-        >
+        <button className="bg-slate-green hover:bg-slate-green-800 cursor-pointer rounded-full lg:px-10 px-10 py-3.5 lg:text-xl text-white shadow-md hover:shadow-lg active:shadow-inner">
           Add Task
         </button>
       </form>

@@ -1,10 +1,18 @@
 import { Link } from "react-router-dom";
 import Card from "./Card";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
-  const [taskNum, setTaskNum] = useState(0)
+  const [taskNum, setTaskNum] = useState(0);
+  const [canClick, setCanClick] = useState(false);
+
+  useEffect(() => {
+    if (taskNum > 0) {
+      setCanClick(true);
+    } else {
+      setCanClick(false);
+    }
+  }, [taskNum]);
 
   return (
     <div className="flex flex-col items-center justify-center my-14">
@@ -16,16 +24,17 @@ const Dashboard = () => {
       </h1>
       {/* redirects to taks page */}
       <Link
-        to="/tasks"
-        className="bg-green-900 text-white py-4 px-10 rounded-xl 
-        text-center transition transform hover:scale-105 shadow-md font-semibold
-        cursor-pointer w-[80%] lg:text-xl"
+        to={canClick ? "/tasks" : "#"}
+        onClick={(e) => !canClick && e.preventDefault()} //blocks click if not ready
+        className={` text-white py-4 px-10 rounded-xl 
+        text-center  font-semibold
+         w-[80%] lg:text-xl ${
+           canClick
+             ? "bg-green-900 shadow-md cursor-pointer transition transform hover:scale-105"
+             : "bg-slate-600 cursor-auto"
+         }`}
       >
-        {/* <button */}
-        {/* type="submit" */}
-        {/* > */}
         Prioritize Tasks
-        {/* </button> */}
       </Link>
     </div>
   );
