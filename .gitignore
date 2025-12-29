@@ -1,3 +1,7 @@
 server/venv/
 server/__pycache__/
+# sessions
+server/flask_session
+# database
+server/mindmint.db
 .env
