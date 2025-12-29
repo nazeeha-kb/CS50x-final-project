@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../api";
 import TaskItem from "./TaskItem";
-
-// init axios with an instance
-const api = axios.create({
-  baseURL: `http://127.0.0.1:5000/api`,
-});
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);

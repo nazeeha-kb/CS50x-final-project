@@ -3,13 +3,8 @@ import RangeSlider from "../../components/RangeSlider";
 import { PiWarningCircle } from "react-icons/pi";
 import { SlEnergy } from "react-icons/sl";
 import { GoClock } from "react-icons/go";
-import axios from "axios";
+import api from "../../api";
 import ToolTipIcon from "../../components/ToolTipIcon";
-
-// initialize axios with an instance
-const api = axios.create({
-  baseURL: `http://127.0.0.1:5000/api`,
-});
 
 const Card = ({ onTaskNumChange }) => {
   const [inputTask, setInputTask] = useState({
@@ -28,7 +23,7 @@ const Card = ({ onTaskNumChange }) => {
     try {
       // if not initialized axios then -> axios.post("full url")
 
-      const new_task = await api.post("/tasks", inputTask);
+      const new_task = await api.post("/add_task", inputTask);
 
       // resetting form after submission
       setInputTask({
@@ -45,7 +40,7 @@ const Card = ({ onTaskNumChange }) => {
       console.log("Task added Successfully!");
 
       //Fetching tasks again - to get number of tasks
-      const res = await api.get("/tasks");
+      const res = await api.get("/add_task");
       // this updates "dashboard"'s useState TaskNum
       onTaskNumChange(res?.data?.length);
     } catch (err) {
