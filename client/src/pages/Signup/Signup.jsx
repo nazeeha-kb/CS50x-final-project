@@ -3,7 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../../api";
 
 const Register = () => {
-  const navigate = useNavigate()
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate();
   const [data, setData] = useState({
     username: "",
     password: "",
@@ -14,16 +16,59 @@ const Register = () => {
     // stops normal submission
     event.preventDefault();
     try {
-      const res = api.post("/signup", data);
+      const res = await api.post("/signup", data);
       console.log("form submitted", res?.data);
-      if (res.data.success) navigate("/dashboard")
+      if (res.data.success) navigate("/dashboard");
     } catch (err) {
-      console.error(err?.response?.data);
+      // Validation - checking for required fields:
+
+      // getting the specific error
+      const error = err?.response?.data;
+      // status code
+      const status = err?.response?.status;
+
+      // alerting the user
+      if (
+        status == 400 &&
+        error?.field == "username" &&
+        error?.code == "REQUIRED"
+      ) {
+        setErrorMessage("Please Enter username");
+      } else if (
+        status == 400 &&
+        error?.field == "password" &&
+        error?.code == "REQUIRED"
+      ) {
+        setErrorMessage("Please Enter password");
+      } else if (
+        status == 400 &&
+        error?.field == "confirmation" &&
+        error?.code == "REQUIRED"
+      ) {
+        setErrorMessage("Please Enter confirmation");
+      } else if (
+        status == 400 &&
+        error?.field == "password" &&
+        error?.code == "INVALID"
+      ) {
+        setErrorMessage("confirmation doesn't match password");
+      } else if (
+        status == 400 &&
+        error?.field == "username" &&
+        error?.code == "TAKEN"
+      ) {
+        setErrorMessage("username is taken");
+      }
     }
   };
 
   return (
     <div className="my-16">
+      {errorMessage && (
+        <small className="text-red-600 pl-2 text-[0.9rem] my-2">
+          {errorMessage}
+        </small>
+      )}
       <form
         onSubmit={handleSubmit}
         className="w-[clamp(16rem,9.667rem+33.78vw,30rem)] bg-teal-green lg:px-12 px-7 lg:py-14 py-16 rounded-md flex flex-col justify-center items-center md:gap-12 gap-10"

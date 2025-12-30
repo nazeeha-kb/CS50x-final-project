@@ -7,6 +7,8 @@ import { useAuth } from "../../context/AuthContext";
 const Login = () => {
   const { setUser } = useAuth();
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [data, setData] = useState({
     username: "",
     password: "",
@@ -24,11 +26,43 @@ const Login = () => {
       }
     } catch (err) {
       console.error(err.response.data || err.message);
+      // Validation - checking for required fields:
+
+      // getting the specific error
+      const error = err?.response?.data;
+      // status code
+      const status = err?.response?.status;
+
+      // alerting the user
+      if (
+        status == 400 &&
+        error?.field == "username" &&
+        error?.code == "REQUIRED"
+      ) {
+        setErrorMessage("Please Enter username");
+      } else if (
+        status == 400 &&
+        error?.field == "password" &&
+        error?.code == "REQUIRED"
+      ) {
+        setErrorMessage("Please Enter password");
+      } else if (
+        status == 400 &&
+        error?.field == "INVALID_CREDENTIALS" &&
+        error?.code == "INVALID"
+      ) {
+        setErrorMessage("Incorrect username or password");
+      }
     }
   };
 
   return (
     <div className="my-16">
+      {errorMessage && (
+        <small className="text-red-600 pl-2 text-[0.9rem] my-2">
+          {errorMessage}
+        </small>
+      )}
       <form
         onSubmit={handleSubmit}
         className="w-[clamp(16rem,9.667rem+33.78vw,30rem)] bg-teal-green lg:px-12 px-7 lg:py-14 py-16 rounded-md flex flex-col justify-center items-center md:gap-12 gap-10"
