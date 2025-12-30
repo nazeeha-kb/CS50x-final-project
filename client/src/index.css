@@ -13,6 +13,7 @@
   --color-active-task: #a8e6cf;
   --color-disabled-task: #e2bfa7;
   --color-disabled-text: #4a4a4a;
+  --color-done-task: #85ad9e;
   /* typography */
   --font-instrument-serif: "Instrument Serif", serif;
 }

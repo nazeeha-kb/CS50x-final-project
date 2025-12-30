@@ -4,7 +4,7 @@ import Lottie from "../../components/Lottie";
 
 const Completed = () => {
   return (
-    <div className="w-[clamp(18rem,12.333rem+30.22vw,36rem)] flex flex-col items-center justify-center gap-6 text-center lg:px-6 lg:py-10 p-10 rounded-md bg-green-100 border-[0.8px] border-gray-300">
+    <div className="w-[clamp(18rem,12.333rem+30.22vw,36rem)] flex flex-col items-center justify-center gap-6 text-center my-20 lg:px-6 lg:py-10 p-10 rounded-md bg-green-100 border-[0.8px] border-gray-300">
       <div className="flex flex-col lg:gap-3 gap-4">
         <h1 className="text-[clamp(2rem,0.867rem+2.84vw,2.8rem)] font-semibold">
           Congragulations!

@@ -17,7 +17,7 @@ const Navbar = () => {
       .then((res) => {
         if (res.data.success) {
           setUser(null);
-          navigate("/");
+          navigate("/login");
         }
       })
       .catch((err) => console.error(err.response?.data));
