@@ -1,24 +1,73 @@
 import { useState, useEffect } from "react";
 import api from "../../api";
 import TaskItem from "./TaskItem";
+import { useNavigate } from "react-router-dom";
+import { all } from "axios";
 
 const Tasks = () => {
+  const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetching tasks from backend
-  useEffect(() => {
+  const getTasks = () => {
     api
-      .get("/prioritize")
+      .get("/tasks")
       .then((res) => {
         setTasks(res.data);
         console.log(res.data);
       })
       .catch(() => setTasks(null))
       .finally(() => setLoading(false));
+  };
+
+  // Fetching tasks from backend
+  useEffect(() => {
+    getTasks();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  // reacts to click, calls updateStatus then updates UI or triggers refetch
+  const handleStatus = (taskId, status) => {
+    updateStatus(taskId, status);
+  };
+
+  // update status and setUpdateStatus to be true if succeeds
+  const updateStatus = (taskId, status) => {
+    // {status} is short for {status: status}
+    api
+      .put(`/status_update/${taskId}`, { status })
+      .then((res) => {
+        if (res.data.success) {
+          console.log("successfully updated task status");
+          getTasks();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // .finally(() => checkCompleted(tasks));
+    // check if all tasks are completed, if yes, redirect user.
+  };
+
+  useEffect(() => {
+    const checkCompleted = (tasks) => {
+      // like for task in tasks from python
+
+      if (!Array.isArray(tasks) || tasks.length === 0) {
+        console.log("no tasks found");
+        return; // do nothing
+      }
+
+      const allCompleted = tasks.every((task) => task.status === "done"); // check if every task's stutus is "done"
+
+      if (allCompleted) {
+        navigate("/completed");
+        console.log("all completed");
+      } else {
+        console.log("all not completed");
+      }
+    };
+    checkCompleted(tasks);
+  }, [tasks]);
 
   if (!Array.isArray(tasks) || tasks.length === 0)
     return <p>No Tasks found.</p>;
@@ -31,12 +80,7 @@ const Tasks = () => {
 
       <div className="flex flex-col gap-10">
         {tasks.map((task) => (
-          <TaskItem
-            key={task.id}
-            priority={task.priority}
-            taskName={task.taskName}
-            status="Locked"
-          />
+          <TaskItem key={task.id} task={task} onStatusChange={handleStatus} />
         ))}
       </div>
     </div>
