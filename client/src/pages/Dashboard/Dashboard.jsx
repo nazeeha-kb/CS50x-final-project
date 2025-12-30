@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import Card from "./Card";
+import api from "../../api";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [taskNum, setTaskNum] = useState(0);
   const [canClick, setCanClick] = useState(false);
 
@@ -14,6 +17,18 @@ const Dashboard = () => {
     }
   }, [taskNum]);
 
+  const prioritizeTasks = () => {
+    api
+      .get("/prioritize")
+      .then((res) => {
+        if (res.data.success) {
+          console.log("navigating...",res.data.success)
+          navigate("/tasks");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div className="flex flex-col items-center justify-center my-14">
       <div className="">
@@ -23,9 +38,8 @@ const Dashboard = () => {
         {taskNum} Task(s) Added
       </h1>
       {/* redirects to taks page */}
-      <Link
-        to={canClick ? "/tasks" : "#"}
-        onClick={(e) => !canClick && e.preventDefault()} //blocks click if not ready
+      <button
+        onClick={(e) => (canClick ? prioritizeTasks() : e.preventDefault())} //blocks click if not ready
         className={` text-white py-4 px-10 rounded-xl 
         text-center  font-semibold
          w-[80%] lg:text-xl ${
@@ -35,7 +49,7 @@ const Dashboard = () => {
          }`}
       >
         Prioritize Tasks
-      </Link>
+      </button>
     </div>
   );
 };

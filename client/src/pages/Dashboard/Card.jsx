@@ -7,19 +7,20 @@ import api from "../../api";
 import ToolTipIcon from "../../components/ToolTipIcon";
 
 const Card = ({ onTaskNumChange }) => {
+  const [errorMessage, setErrorMessage] = useState("");
   const [inputTask, setInputTask] = useState({
-    id: "8",
+    id: "0",
     taskName: "",
     urgency: 10,
     time: 10,
     energy: 10,
   });
-  const [errorMessage, setErrorMessage] = useState("");
 
   // Creating New Task
   const handleSubmit = async (event) => {
     // doesn't reload on submission
     event.preventDefault();
+    console.log("submitting");
     try {
       // if not initialized axios then -> axios.post("full url")
 
@@ -43,6 +44,7 @@ const Card = ({ onTaskNumChange }) => {
       const res = await api.get("/add_task");
       // this updates "dashboard"'s useState TaskNum
       onTaskNumChange(res?.data?.length);
+      console.log("tasks:", res.data);
     } catch (err) {
       // Validation - checking for required fields:
 
