@@ -1,7 +1,5 @@
 # MindMint
 
-This is the Final Project for Harvard CS50x Course.
-
 **Description**:
 
 A full-stack web app that helps users focus on what matters most by ranking tasks based on urgency, energy, and time, unlocking them one at a time.
