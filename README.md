@@ -4,15 +4,14 @@
 
 A full-stack web app that helps users focus on what matters most by ranking tasks based on urgency, energy, and time, unlocking them one at a time.
 
-## Video Demo:
-
-https://www.youtube.com/watch?v=wez045sgYjs
-
 ## Tech Stack
 
 Frontend: React, Tailwind CSS, Axios
+
 Backend: Flask (Python)
+
 Database: SQLite
+
 API: REST
 
 ## Features
